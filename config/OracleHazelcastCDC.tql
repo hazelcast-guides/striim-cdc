@@ -1,0 +1,30 @@
+
+CREATE APPLICATION OracleHazelcastCDC;
+
+CREATE SOURCE OracleReader USING OracleReader  ( 
+FetchSize: 1,
+  QueueSize: 2048,
+  CommittedTransactions: true,
+  Compression: false,
+  Username: 'striim',
+  ConnectionURL: '{DB_CONNECTION_URL}:1521:ORCLCDB',
+  FilterTransactionState: true,
+  DictionaryMode: 'OnlineCatalog',
+  ReaderType: 'LogMiner',
+  Tables: 'SYS.PRODUCT_INV',
+  Password: 'Nca9aDj9uiPT+Kf2wRz1zg==',
+  Password_encrypted: 'true' ) 
+OUTPUT TO OracleReader_ChangeDataStream  ;
+
+CREATE OR REPLACE TARGET OracleHazelcastCDC_HazelcastTarget1 USING Global.HazelcastWriter  ( 
+mode: 'INITIALLOAD',
+  maps: 'SYS.PRODUCT_INV,ProductInv',
+  BatchPolicy: 'eventCount:10000,Interval:30',
+  ConnectionURL: '{HZ_IP_ADDRESS}:5701',
+  adapterName: 'HazelcastWriter',
+  ormFile: 'PATH/TO/product_inv_orm.xml',
+  Clustername: 'dev' ) 
+INPUT FROM admin.OracleReader_ChangeDataStream;
+
+END APPLICATION OracleHazelcastCDC;
+
