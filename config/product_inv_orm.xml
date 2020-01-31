@@ -2,7 +2,7 @@
 <entity-mappings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm" version="2.4">
 
     <entity name="ProductInv" class="com.hazelcast.cdc.pojo.ProductInv" >
-        <table name="SYS.PRODUCT_INV"/>
+        <table name="ORCLPDB1.STRIIM.PRODUCT_INV"/>
         <attributes>
             <id name ="sku" attribute-type="Long"  >
                 <column nullable="false" name="SKU" />
