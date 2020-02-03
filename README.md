@@ -47,7 +47,7 @@ Management Center dashboard will be avaliable under `http://localhost:38080/haze
 
 Check all containers are up and ready before continue to manual:
 ```bash
-Hasans-MacBook:~ hasancelik$ docker ps
+$ docker ps
 IMAGE                                       STATUS                    PORTS                                                      NAMES
 hazelcast/hazelcast:3.12.6                  Up 16 minutes             0.0.0.0:5701->5701/tcp                                     hazelcast
 hazelcast/management-center:3.12.6          Up 23 minutes             8081/tcp, 8443/tcp, 0.0.0.0:38080->8080/tcp                mancenter
