@@ -25,7 +25,8 @@ public class StriimOracleHzCdcApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        log.info("StriimOracleHzCdcApplication...");
+        log.info("StriimOracleHzCdcApplication started.");
+        log.info("Populating the database...");
 
         Random r = new Random();
         final long NANOSEC_PER_SEC = 1000l * 1000 * 1000;

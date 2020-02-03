@@ -29,6 +29,31 @@ $ watch docker logs oracledb
 $ docker exec -it oracledb bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
 ```
 
+### Hazelcast and Management Center
+
+Start Hazelcast member and Management Center containers:
+
+```bash
+$ docker run -d --name mancenter -p 38080:8080 hazelcast/management-center:3.12.6
+
+# extract management-center container's IP address
+$ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mancenter
+
+$ docker run -d --name hazelcast -p 5701:5701 -e MANCENTER_URL="http://{MAN_CENTER_CONTAINER_IP}:8080/hazelcast-mancenter"  hazelcast/hazelcast:3.12.6
+```
+
+Management Center dashboard will be avaliable under `http://localhost:38080/hazelcast-mancenter`.
+
+
+Check all containers are up and ready before continue to manual:
+```bash
+Hasans-MacBook:~ hasancelik$ docker ps
+IMAGE                                       STATUS                    PORTS                                                      NAMES
+hazelcast/hazelcast:3.12.6                  Up 16 minutes             0.0.0.0:5701->5701/tcp                                     hazelcast
+hazelcast/management-center:3.12.6          Up 23 minutes             8081/tcp, 8443/tcp, 0.0.0.0:38080->8080/tcp                mancenter
+striim/evalversion                          Up 25 minutes             1527/tcp, 0.0.0.0:9080->9080/tcp                           striim
+store/oracle/database-enterprise:12.2.0.1   Up 25 minutes (healthy)   0.0.0.0:1521->1521/tcp, 0.0.0.0:8080->8080/tcp, 5500/tcp   oracledb
+```
 
 ### Configuring Oracle Database
 
@@ -57,19 +82,18 @@ $ SQL> create table STRIIM.PRODUCT_INV(SKU NUMBER(19) not null primary key, LAST
  1) Download driver jar(`ojdbc8.jar`) from [Oracle website](https://www.oracle.com/database/technologies/jdbc-ucp-122-downloads.html). `OracleReader` needs this jar to connect DB so follow the steps below to add it into `striim` container:
 
     ```bash
-    $ docker cp ojdbc8.jar striim:/opt/striim/lib/ojdbc8.jar
+    $ docker cp path/to/your/ojdbc8.jar striim:/opt/striim/lib/ojdbc8.jar
      
-    $ docker exec -it striim bash
-    $ chmod +x /opt/striim/lib/ojdbc8.jar
-    $ chown striim:striim /opt/striim/lib/ojdbc8.jar
+    $ docker exec -it striim chown striim:striim /opt/striim/lib/ojdbc8.jar
+    $ docker exec -it striim chmod +x /opt/striim/lib/ojdbc8.jar
     ```
 
- 2) Add Maven Oracle JDBC driver in your Maven local repository then build the project to create `pojo-0.0.1-SNAPSHOT.jar`:
-    ```bash
-    $ mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle 
-        -DartifactId=ojdbc8 -Dversion=12.2.0.1 -Dpackaging=jar
+ 2) Clone the project then build the project to create `pojo-0.0.1-SNAPSHOT.jar`:
     
-    $ mvn clean install
+    ```bash
+     $ git clone https://github.com/hazelcast-guides/striim-hazelcast-cdc.git
+     $ cd pojo
+     $ mvn clean install
     ```
 
  3) To use `HazelcastWriter`, you need to POJO jar and ORM file, you can find details about these files, [here](https://www.striim.com/docs/en/hazelcast-writer.html). You can copy POJO jar and ORM file to striim container via below commands:
@@ -78,10 +102,9 @@ $ SQL> create table STRIIM.PRODUCT_INV(SKU NUMBER(19) not null primary key, LAST
     $ docker cp ./pojo/target/pojo-0.0.1-SNAPSHOT.jar striim:/opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
     $ docker cp ./config/product_inv_orm.xml striim:/opt/striim/
 
-    $ docker exec -it striim bash
-    $ chmod +x /opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
-    $ chown striim:striim /opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
-    $ chown striim:striim  productInv_orm.xml
+    $ docker exec -it striim chown striim:striim /opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
+    $ docker exec -it striim chown striim:striim /opt/striim/product_inv_orm.xml
+    $ docker exec -it striim chmod +x /opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
     ```
 
  4) After all changes restart your container and proceed to the next steps:
@@ -91,14 +114,21 @@ $ SQL> create table STRIIM.PRODUCT_INV(SKU NUMBER(19) not null primary key, LAST
 
 ### (Quick Setup) Use existing TQL file
 
-If you do not want to bypass next two sections, you can import pre-prepared TQL file.
+If you do not want to skip next two sections, you can import pre-prepared TQL file.
 
- 1) Change `{ORACLE_DB_ADDRESS}` and `{HZ_IP_ADDRESS}` placeholders with real IP addresses. You can also modify these values before deploy the app.
+ 1) Change `{ORACLE_DB_ADDRESS}` and `{HZ_IP_ADDRESS}` placeholders with real IP addresses at `config/OracleHazelcastCDC.tql`:
  
+    ```bash
+    $ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' hazelcast
+
+    $ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' oracledb
+    ```
+    You can also modify these values before deploy the app.       
+    
  2) To create new app, select `Import Existing App` and choose tql which you modified.
  
 
-### Configuring Oracle Database CDC connection from Striim dashboard
+### Configuring Oracle Database CDC connection on Striim dashboard
 
  1) To create new app, select `Start with Template` then `Oracle CDC to Hazelcast`:
 
@@ -107,19 +137,65 @@ If you do not want to bypass next two sections, you can import pre-prepared TQL 
     Use `OracleHazelcastCDC` or another name as an `Application Name`. 
     
  2) Enter your Oracle DB data and credentials:
-    ![DB Connection Creds](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_1)
-    ![DB Connection Control](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2)
+    ![DB Connection Creds](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_1.png)
+    ![DB Connection Control](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2.png)
+    
+    - `localhost` or `IP address of oracledb container` does not work for `Connection URL` so you need to use your HOST IP address.
+    - As you can see above, service section of `Connection URL` is configured as a `/orclpdb1.localdomain`, not as `:ORCLCDB`. If you configure service as a `:ORCLCDB`, `STRIIM` application or `C##STRIIM` common user can not reach/list `PRODUCT_INV` table which is under `STRIIM` local user because of `CDB specific` bug at Striim template itself. We will update these infos with the correct ones before deploy the application. By the way, we have already contacted with them and reported this issue. They will provide to fix at future releases. If you use Oracle DB **without CDB**, you are not affect bt this issue.  
     
  3) Select source table:
-    ![Source Table](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2)
+    ![Source Table](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2.png)
     
-### Configuring Hazelcast
+### Configuring Hazelcast Writer on Striim dashboard
 
-...
+ 1) Put ORM file location(`/opt/striim/product_inv_orm.xml`) and Hazelcast cluster infos:
+ 
+    ![Hazelcast Connection](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/hazelcast_writer_1.png)
 
+ 2) Check ORM mapping details:
+ 
+    ![ORM Mapping](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/hazelcast_writer_2.png)
+    
+ 3) Choose related `DataStream` from `Input From` dropdown and save `Target`:
+ 
+    ![Hazelcast Target](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/hazelcast_writer_3.png)
+    
 
-### Start Spring Boot Application to populate a database 
+### Apply OracleReader changes and Deploy&Run the CDC application 
 
-```bash
-git clone https://github.com/hasancelik/hazelcast-striim-cdc
-```
+- (Only for Template Users) After all configuration steps finally your CDC applications is created. Before deploy and create application, as I mentioned at [Configuring Oracle Database CDC connection on Striim dashboard](###Configuring Oracle Database CDC connection on Striim dashboard) section, you need to update `Connection URL` and `Tables` section like this:
+
+  ![Update Reader](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_changes_1.png)
+  
+- (Only for Template Users) As a final step, go to enable OracleReader's `Support PDB and CDB` option:
+
+  ![Enable CDB Support](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_changes_2.png)
+
+- (For both Template and Quick Setup Users) Deploy and Run CDC application:
+
+  ![Run CDC Application](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_1.png)
+
+### Start Spring Boot Application to populate a database
+
+ 1) Add Oracle JDBC driver in your Maven local repository:
+   
+   ```bash
+   $ mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle 
+    -DartifactId=ojdbc8 -Dversion=12.2.0.1 -Dpackaging=jar
+   ```
+ 2) Run `spring-boot` application:
+  
+   ```bash
+   $ mvn spring-boot:run
+   ```
+
+### Check up
+
+ 1) Check application loading data from OracleReader to HazelcastWriter:
+ 
+    ![Running Application](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_2.png)
+
+ 2) Check Hazelcast Map(`ProductInv`) size from Management Center, `http://localhost:38080/hazelcast-mancenter/dev/maps/ProductInv`:
+ 
+    ![ProductInv Map]((https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/mancenter_map.png))
+    
