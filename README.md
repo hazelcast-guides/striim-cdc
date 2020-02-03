@@ -116,16 +116,11 @@ $ SQL> create table STRIIM.PRODUCT_INV(SKU NUMBER(19) not null primary key, LAST
 
 If you do not want to skip next two sections, you can import pre-prepared TQL file.
 
- 1) Change `{ORACLE_DB_ADDRESS}` and `{HZ_IP_ADDRESS}` placeholders with real IP addresses at `config/OracleHazelcastCDC.tql`:
- 
-    ```bash
-    $ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' hazelcast
-
-    $ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' oracledb
-    ```
-    You can also modify these values before deploy the app.       
+ 1) Change `{ORACLE_DB_ADDRESS}` and `{HZ_IP_ADDRESS}` placeholders with your HOST IP addresses at `config/OracleHazelcastCDC.tql`. You can modify these values before deploy the app as well.       
     
- 2) To create new app, select `Import Existing App` and choose tql which you modified.
+ 2) To create new app, select `Import Existing App` and choose `.tql` which you already modified.
+ 
+ 3) Proceed to `Apply OracleReader changes and Deploy&Run the CDC application` section.
  
 
 ### Configuring Oracle Database CDC connection on Striim dashboard
