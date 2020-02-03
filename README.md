@@ -160,15 +160,15 @@ If you do not want to skip next two sections, you can import pre-prepared TQL fi
 
 - (Only for Template Users) After all configuration steps finally your CDC applications is created. Before deploy and create application, as I mentioned at [Configuring Oracle Database CDC connection on Striim dashboard](###Configuring Oracle Database CDC connection on Striim dashboard) section, you need to update `Connection URL` and `Tables` section like this:
 
-  ![Update Reader](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_changes_1.png)
+  ![Update Reader](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_change_1.png)
   
 - (Only for Template Users) As a final step, go to enable OracleReader's `Support PDB and CDB` option:
 
-  ![Enable CDB Support](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_changes_2.png)
+  ![Enable CDB Support](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_change_2.png)
 
 - (For both Template and Quick Setup Users) Deploy and Run CDC application:
 
-  ![Run CDC Application](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_1.png)
+  ![Run CDC Application](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_2.png)
 
 ### Start Spring Boot Application to populate a database
 
@@ -188,9 +188,9 @@ If you do not want to skip next two sections, you can import pre-prepared TQL fi
 
  1) Check application loading data from OracleReader to HazelcastWriter:
  
-    ![Running Application](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_2.png)
+    ![Running Application](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_1.png)
 
  2) Check Hazelcast Map(`ProductInv`) size from Management Center, `http://localhost:38080/hazelcast-mancenter/dev/maps/ProductInv`:
  
-    ![ProductInv Map]((https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/mancenter_map.png))
+    ![ProductInv Map](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/mancenter_map.png)
     
