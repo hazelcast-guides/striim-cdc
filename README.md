@@ -158,7 +158,7 @@ If you do not want to skip next two sections, you can import pre-prepared TQL fi
 
 ### Apply OracleReader changes and Deploy&Run the CDC application 
 
-- (Only for Template Users) After all configuration steps finally your CDC applications is created. Before deploy and create application, as I mentioned at [Configuring Oracle Database CDC connection on Striim dashboard](###Configuring Oracle Database CDC connection on Striim dashboard) section, you need to update `Connection URL` and `Tables` section like this:
+- (Only for Template Users) After all configuration steps finally your CDC applications is created. Before deploy and create application, as mentioned at `Configuring Oracle Database CDC connection on Striim dashboard` section, you need to update `Connection URL` and `Tables` section like this to run CDC application without any issue:
 
   ![Update Reader](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_change_1.png)
   
