@@ -33,14 +33,14 @@
 
 #### Apply OracleReader changes and Deploy&Run the CDC application 
 
-- (Only for Template Users) After all configuration steps finally your CDC applications is created. Before deploy and create application, as mentioned at `Configuring Oracle Database CDC connection on Striim dashboard` section, you need to update `Connection URL` and `Tables` section like this to run CDC application without any issue:
+- After all configuration steps finally your CDC applications is created. Before deploy and create application, as mentioned at `Configuring Oracle Database CDC connection on Striim dashboard` section, you need to update `Connection URL` and `Tables` section like this to run CDC application without any issue:
 
   ![Update Reader](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_change_1.png)
   
-- (Only for Template Users) As a final step, go to enable OracleReader's `Support PDB and CDB` option:
+- As a final step, go to enable OracleReader's `Support PDB and CDB` option:
 
   ![Enable CDB Support](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_change_2.png)
 
-- (For both Template and Quick Setup Users) Deploy and Run CDC application:
+- Deploy and Run CDC application:
 
   ![Run CDC Application](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_2.png)

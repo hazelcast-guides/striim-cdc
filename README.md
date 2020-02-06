@@ -179,7 +179,7 @@ In previous sections, we installed required software for the sample application.
 There are two ways to install OracleHazelcastCDC App. We recommend to use `Using TQL file (Quick Setup)`
 
 - Using TQL file (Quick Setup)
-- Configuring through Striim dashboard
+- Configuring through Striim dashboard - [instructions](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/striim_dashboard.md)
 
 ###  Configuring Oracle Database CDC connection Using TQL file (Quick Setup)
 
