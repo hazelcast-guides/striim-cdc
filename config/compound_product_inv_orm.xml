@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm" version="2.4">
 
-    <entity name="ProductInv" class="com.hazelcast.cdc.pojo.ProductInv" >
-        <table name="ORCLPDB1.STRIIM.PRODUCT_INV"/>
+    <entity name="CompoundProductInv" class="com.hazelcast.cdc.pojo.ProductInv" >
+        <table name="ORCLPDB1.STRIIM.COMPOUND_PRODUCT_INV"/>
+        <id-class class="com.hazelcast.cdc.pojo.ProductKey"/>
         <attributes>
             <id name ="sku" attribute-type="Long"  >
                 <column nullable="false" name="SKU" />
+            </id>
+            <id name ="skuHash" attribute-type="String"  >
+                <column nullable="false" name="SKU_HASH" />
             </id>
             <basic name="stock" attribute-type="double" >
                 <column nullable="false" name="STOCK"  />
@@ -18,5 +22,4 @@
             </basic>
         </attributes>
     </entity>
-
 </entity-mappings>

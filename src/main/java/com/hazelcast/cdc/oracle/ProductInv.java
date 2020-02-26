@@ -1,21 +1,30 @@
 package com.hazelcast.cdc.oracle;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_inv")
+@Table(name = "compound_product_inv")
+@IdClass(ProductKey.class)
 public class ProductInv implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long sku = 0L;
+
+    @Id
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    public String skuHash = null;
 
     public double stock = 0;
     public String name = null;
@@ -36,6 +45,14 @@ public class ProductInv implements Serializable {
 
     public void setSku(Long sku) {
         this.sku = sku;
+    }
+
+    public String getSkuHash() {
+        return skuHash;
+    }
+
+    public void setSkuHash(String skuHash) {
+        this.skuHash = skuHash;
     }
 
     public double getStock() {
@@ -80,6 +97,7 @@ public class ProductInv implements Serializable {
     public String toString() {
         return "ProductInv{" +
                 "sku=" + sku +
+                ", skuHash=" + skuHash +
                 ", stock=" + stock +
                 ", name='" + name + '\'' +
                 ", lastUpdated=" + lastUpdated +

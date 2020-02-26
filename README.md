@@ -126,10 +126,10 @@ $ SQL> create user striim identified by striim;
 $ SQL> grant connect, resource,dba to striim container=current;
 $ SQL> alter user striim default role dba;
 ```
-Create create `PRODUCT_INV` table with striim user :
+Create create `COMPOUND_PRODUCT_INV` table with striim user :
 ```bash
 $ SQL> conn striim/striim@orclpdb1
-$ SQL> create table STRIIM.PRODUCT_INV(SKU NUMBER(19) not null primary key, LAST_UPDATED TIMESTAMP(6), NAME VARCHAR2(255 char), STOCK FLOAT not null);
+$ SQL> create table STRIIM.COMPOUND_PRODUCT_INV(SKU NUMBER(19) not null, SKU_HASH VARCHAR2(255 char) not null, LAST_UPDATED TIMESTAMP(6), NAME VARCHAR2(255 char), STOCK FLOAT not null, primary key (SKU, SKU_HASH));
 ```
 We will use/populate the newly created table at next steps. By the way, this user will be used by our Spring application.
 
@@ -162,10 +162,10 @@ We will use/populate the newly created table at next steps. By the way, this use
 
     ```bash
     $ docker cp ./pojo/target/pojo-0.0.1-SNAPSHOT.jar striim:/opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
-    $ docker cp ./config/product_inv_orm.xml striim:/opt/striim/
+    $ docker cp ./config/compound_product_inv_orm.xml striim:/opt/striim/
 
     $ docker exec -it striim chown striim:striim /opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
-    $ docker exec -it striim chown striim:striim /opt/striim/product_inv_orm.xml
+    $ docker exec -it striim chown striim:striim /opt/striim/compound_product_inv_orm.xml
     $ docker exec -it striim chmod +x /opt/striim/lib/pojo-0.0.1-SNAPSHOT.jar
     ```
 

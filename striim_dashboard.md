@@ -11,14 +11,14 @@
     ![DB Connection Control](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2.png)
     
     - `localhost` or `IP address of oracledb container` does not work for `Connection URL` so you need to use your HOST IP address.
-    - As you can see above, service section of `Connection URL` is configured as a `/orclpdb1.localdomain`, not as `:ORCLCDB`. If you configure service as a `:ORCLCDB`, `STRIIM` application or `C##STRIIM` common user can not reach/list `PRODUCT_INV` table which is under `STRIIM` local user because of `CDB specific` bug at Striim template itself. We will update these infos with the correct ones before deploy the application. By the way, we have already contacted with them and reported this issue. They will provide to fix at future releases. If you use Oracle DB **without CDB**, you are not affect bt this issue.  
+    - As you can see above, service section of `Connection URL` is configured as a `/orclpdb1.localdomain`, not as `:ORCLCDB`. If you configure service as a `:ORCLCDB`, `STRIIM` application or `C##STRIIM` common user can not reach/list `COMPOUND_PRODUCT_INV` table which is under `STRIIM` local user because of `CDB specific` bug at Striim template itself. We will update these infos with the correct ones before deploy the application. By the way, we have already contacted with them and reported this issue. They will provide to fix at future releases. If you use Oracle DB **without CDB**, you are not affect bt this issue.  
     
  3) Select source table:
     ![Source Table](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2.png)
     
 #### Configuring Hazelcast Writer on Striim dashboard
 
- 1) Put ORM file location(`/opt/striim/product_inv_orm.xml`) and Hazelcast cluster infos:
+ 1) Put ORM file location(`/opt/striim/compound_product_inv_orm.xml`) and Hazelcast cluster infos:
  
     ![Hazelcast Connection](https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/hazelcast_writer_1.png)
 
