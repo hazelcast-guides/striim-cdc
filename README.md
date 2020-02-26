@@ -1,6 +1,8 @@
 # Load data from Oracle CDC to Hazelcast via Striim
 
-This guide explains How to use Hazelcast Striim Writer to cache data stored in Oracle Database Enterprise Edition(12.2.0.1) .
+This guide explains How to use Hazelcast Striim Writer to cache data stored in Oracle Database Enterprise Edition(12.2.0.1). 
+
+This guide uses basic data types to store and capture. If you want to try with object/composite key, check and follow README at [compound-key](https://github.com/hazelcast-guides/striim-hazelcast-cdc/tree/compound-key) branch.
 
 ### Prerequisites
 - Docker
