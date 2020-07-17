@@ -1,0 +1,68 @@
+== Configuring Oracle Database CDC connection on Striim dashboard
+
+. To create new app, select `+Start with Template+` then
+`+Oracle CDC to Hazelcast+`:
++
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/create_new_app.png[Create
+New App]
++
+Use `+OracleHazelcastCDC+` or another name as an `+Application Name+`.
+
+. Enter your Oracle DB data and credentials:
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_1.png[DB
+Connection Creds]
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2.png[DB
+Connection Control]
+* `+localhost+` or `+IP address of oracledb container+` does not work
+for `+Connection URL+` so you need to use your HOST IP address.
+* As you can see above, service section of `+Connection URL+` is
+configured as a `+/orclpdb1.localdomain+`, not as `+:ORCLCDB+`. If you
+configure service as a `+:ORCLCDB+`, `+STRIIM+` application or
+`+C##STRIIM+` common user can not reach/list `+PRODUCT_INV+` table which
+is under `+STRIIM+` local user because of `+CDB specific+` bug at Striim
+template itself. We will update these infos with the correct ones before
+deploy the application. By the way, we have already contacted with them
+and reported this issue. They will provide to fix at future releases. If
+you use Oracle DB *without CDB*, you are not affect bt this issue.
+
+. Select source table:
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/oracle_reader_2.png[Source
+Table]
+
+=== Configuring Hazelcast Writer on Striim dashboard
+
+[arabic]
+. Put ORM file location(`+/opt/striim/product_inv_orm.xml+`) and
+Hazelcast cluster infos:
++
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/hazelcast_writer_1.png[Hazelcast
+Connection]
+. Check ORM mapping details:
++
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/hazelcast_writer_2.png[ORM
+Mapping]
+. Choose related `+DataStream+` from `+Input From+` dropdown and save
+`+Target+`:
++
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/hazelcast_writer_3.png[Hazelcast
+Target]
+
+=== Apply OracleReader changes and Deploy&Run the CDC application
+
+* After all configuration steps finally your CDC applications is
+created. Before deploy and create application, as mentioned at
+`+Configuring Oracle Database CDC connection on Striim dashboard+`
+section, you need to update `+Connection URL+` and `+Tables+` section
+like this to run CDC application without any issue:
++
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_change_1.png[Update
+Reader]
+* As a final step, go to enable OracleReader’s `+Support PDB and CDB+`
+option:
++
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_change_2.png[Enable
+CDB Support]
+* Deploy and Run CDC application:
++
+image:https://github.com/hazelcast-guides/striim-hazelcast-cdc/blob/master/images/application_run_2.png[Run
+CDC Application]
