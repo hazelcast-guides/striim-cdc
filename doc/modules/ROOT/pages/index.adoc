@@ -1,4 +1,4 @@
-:github-address: https://github.com/hazelcast-guides/striim-hazelcast-cdc
+:github-address: https://github.com/hazelcast-guides/striiim-cdc
 :templates-url: templates:ROOT:page$/
 
 = Load data from Oracle CDC to Hazelcast via Striim
@@ -45,7 +45,7 @@ That is the excerpt from Striim DockerHub Page if you experience an expired lice
 ----
 Note: This docker image is an evaluation version which comes with a trial license valid for
 15 days and single node. Any docker image older than 15 days would not work. We try and keep
-pushing our latest releases on docker hub. But in case, you don't see an image within 15 
+pushing our latest releases on docker hub. But in case, you don't see an image within 15
 days or if you need extended license, please contact support@striim.com
 ----
 
@@ -121,7 +121,7 @@ $ SQL> conn sys as sysdba;
 
 Enable `+ARCHIVELOG+` by following this https://www.striim.com/docs/en/enabling-archivelog.html[link].
 
-Enable `+SUPPLEMENTAL LOG DATA+` by following this 
+Enable `+SUPPLEMENTAL LOG DATA+` by following this
 https://www.striim.com/docs/en/enabling-supplemental-log-data.html[link].
 
 Create an Oracle User with LogMiner Privileges
@@ -185,7 +185,7 @@ $ mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle
 +
 [source,bash]
 ----
- $ git clone https://github.com/hazelcast-guides/striim-hazelcast-cdc.git
+ $ git clone https://github.com/hazelcast-guides/striiim-cdc.git
  $ cd pojo
  $ mvn clean install
 ----
