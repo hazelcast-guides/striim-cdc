@@ -1,4 +1,4 @@
-:github-address: https://github.com/hazelcast-guides/striiim-cdc
+:github-address: https://github.com/hazelcast-guides/striim-cdc
 :templates-url: templates:ROOT:page$/
 
 = Load data from Oracle CDC to Hazelcast via Striim
@@ -185,7 +185,7 @@ $ mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle
 +
 [source,bash]
 ----
- $ git clone https://github.com/hazelcast-guides/striiim-cdc.git
+ $ git clone https://github.com/hazelcast-guides/striim-cdc.git
  $ cd pojo
  $ mvn clean install
 ----
