@@ -28,7 +28,6 @@ To run Striim evaluation version, run the following Docker commands(remember to 
 
 [source,bash]
 ----
-$ docker pull striim/evalversion
 $ docker run -d --name striim -p 9080:9080 -e "STRIIM_ACCEPT_EULA=Y" -e "FIRST_NAME=yourname" -e "LAST_NAME=yoursurname" -e "COMPANY_NAME=yourcompanyname" -e "COMPANY_EMAIL_ADDRESS=yourcompanyemailaddress" striim/evalversion
 ----
 
