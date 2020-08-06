@@ -3,7 +3,7 @@
 
 = Load data from Oracle CDC to Hazelcast via Striim
 
-This guide explains how to use Hazelcast Striim Writer to cache data stored in Oracle Database Enterprise Edition (12.2.0.1).
+This guide shows how to use Hazelcast Striim Writer to create a hot cache for data stored in Oracle Database Enterprise Edition (12.2.0.1).
 
 include::{templates-url}/link-to-repo.adoc[]
 
@@ -20,9 +20,11 @@ include::{templates-url}/link-to-repo.adoc[]
 
 == Striim
 
-Striim is an end-to-end streaming platform for real-time integration and analytics of data. This guide uses Striim evaluation version hosted at https://hub.docker.com/r/striim/evalversion/[Striim DockerHub].
+Striim is an end-to-end streaming platform for real-time integration and data analytics.
 
-To run Striim evaluation version, run the following docker commands:
+This guide uses Striim evaluation version hosted at https://hub.docker.com/r/striim/evalversion/[Striim DockerHub].
+
+To run Striim evaluation version, run the following Docker commands:
 
 [source,bash]
 ----
@@ -40,7 +42,7 @@ started.
 Please go to http://172.17.0.2:9080 or https://172.17.0.2:9081 to administer, or use console
 ----
 
-That is the excerpt from Striim DockerHub Page if you experience an expired license key issue:
+If you experience an expired license key issue:
 
 ----
 Note: This docker image is an evaluation version which comes with a trial license valid for
@@ -49,7 +51,7 @@ pushing our latest releases on DockerHub. But in case, you don't see an image wi
 days or if you need an extended license, please contact support@striim.com
 ----
 
-If everything goes well, then Striim dashboard will be available under http://localhost:9080. You can use `+admin/admin+` as credentials.
+If everything goes well, then Striim dashboard will be available under _http://localhost:9080_. You can use `+admin/admin+` as credentials.
 
 == Oracle Database Enterprise Edition
 
@@ -68,7 +70,6 @@ Run Oracle Database in a Docker container:
 
 [source]
 ----
-$ docker pull store/oracle/database-enterprise:12.2.0.1
 $ docker run -d -p 8080:8080 -p 1521:1521 --name oracledb store/oracle/database-enterprise:12.2.0.1
 ----
 
@@ -93,9 +94,9 @@ $ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{en
 $ docker run -d --name hazelcast -p 5701:5701 -e MANCENTER_URL="http://{MAN_CENTER_CONTAINER_IP}:8080/hazelcast-mancenter"  hazelcast/hazelcast:3.12.6
 ----
 
-Management Center dashboard will be avaliable under `+http://localhost:38080/hazelcast-mancenter+`.
+Management Center dashboard will be available under `+http://localhost:38080/hazelcast-mancenter+`.
 
-Check all containers are up and ready before continue to manual:
+Check all containers are up and ready before going further:
 
 [source,bash]
 ----
@@ -124,7 +125,7 @@ Enable `+ARCHIVELOG+` by following this https://www.striim.com/docs/en/enabling-
 Enable `+SUPPLEMENTAL LOG DATA+` by following this
 https://www.striim.com/docs/en/enabling-supplemental-log-data.html[link].
 
-Create an Oracle User with LogMiner Privileges
+Create an Oracle User with _LogMiner_ privileges
 
 [source,bash]
 ----
@@ -174,7 +175,7 @@ $ docker exec -it striim chown striim:striim /opt/striim/lib/ojdbc8.jar
 $ docker exec -it striim chmod +x /opt/striim/lib/ojdbc8.jar
 ----
 +
-Install the jar into your local maven repository
+Install the jar into your local Maven repository:
 +
 [source,bash]
 ----
@@ -189,7 +190,7 @@ $ mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle
  $ cd pojo
  $ mvn clean install
 ----
-. To use `+HazelcastWriter+`, you need to POJO jar and ORM file, you can find details about these files, https://www.striim.com/docs/en/hazelcast-writer.html[here]. You can copy POJO jar and ORM file to striim container via below commands:
+. To use `+HazelcastWriter+`, you need to POJO jar and ORM file, you can find details about these files, https://www.striim.com/docs/en/hazelcast-writer.html[here]. You can copy POJO jar and ORM file to striim container using below commands:
 +
 [source,bash]
 ----
@@ -211,14 +212,19 @@ $ docker restart striim
 
 == Install OracleHazelcastCDC App into Striim
 
-In the previous sections, we installed the required software for the sample application. We'll now install OracleHazelcastCDC app through Striim dashboard. There are two ways to install OracleHazelcastCDC App. We recommend to use `+Using TQL file (Quick Setup)+`
+In the previous sections, we installed the required software for the sample application. We'll now install OracleHazelcastCDC app through Striim dashboard.
+
+There are two ways to install OracleHazelcastCDC App. We recommend using `+Using TQL file (Quick Setup)+`
 
 * Using TQL file (Quick Setup)
 * Configuring through Striim dashboard
 
 == Configuring Oracle Database CDC connection Using TQL file (Quick Setup)
 
-. Change `+{ORACLE_DB_ADDRESS}+` and `+{HZ_IP_ADDRESS}+` placeholders with your HOST IP addresses at `+config/OracleHazelcastCDC.tql+`. You can modify these values before deploying the app as well.
+. Change `+{ORACLE_DB_ADDRESS}+` and `+{HZ_IP_ADDRESS}+` placeholders with your HOST IP addresses at `+config/OracleHazelcastCDC.tql+`.
+
+You can modify these values before deploying the app as well.
+
 . Go to http://localhost:9080/#createapp[Create App Page] and select `+Import Existing App+` and choose `+.tql+` which you already modified.
 . Deploy and Run CDC application:
 image:application_run_2.png[Run CDC Application]
