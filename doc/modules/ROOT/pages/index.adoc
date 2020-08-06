@@ -24,12 +24,12 @@ Striim is an end-to-end streaming platform for real-time integration and data an
 
 This guide uses Striim evaluation version hosted at https://hub.docker.com/r/striim/evalversion/[Striim DockerHub].
 
-To run Striim evaluation version, run the following Docker commands:
+To run Striim evaluation version, run the following Docker commands(remember to replace placeholders with actual values):
 
 [source,bash]
 ----
 $ docker pull striim/evalversion
-$ docker run -d --name striim -p 9080:9080 -e "STRIIM_ACCEPT_EULA=Y"  striim/evalversion
+$ docker run -d --name striim -p 9080:9080 -e "STRIIM_ACCEPT_EULA=Y" -e "FIRST_NAME=yourname" -e "LAST_NAME=yoursurname" -e "COMPANY_NAME=yourcompanyname" -e "COMPANY_EMAIL_ADDRESS=yourcompanyemailaddress" striim/evalversion
 ----
 
 Make sure that Striim started properly:
