@@ -120,7 +120,7 @@ Enable `+ARCHIVELOG+` by following this https://www.striim.com/docs/en/enabling-
 Enable `+SUPPLEMENTAL LOG DATA+` by following this
 https://www.striim.com/docs/en/enabling-supplemental-log-data.html[link].
 
-Create an Oracle User with _LogMiner_ privileges
+Create an Oracle User with _LogMiner_ privileges:
 
 [source,bash]
 ----
@@ -183,7 +183,7 @@ $ mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle
 ----
  $ git clone https://github.com/hazelcast-guides/striim-cdc.git
  $ cd pojo
- $ mvn clean install
+ $ mvn install
 ----
 . To use `+HazelcastWriter+`, you need to POJO jar and ORM file, you can find details about these files, https://www.striim.com/docs/en/hazelcast-writer.html[here]. You can copy POJO jar and ORM file to striim container using below commands:
 +
