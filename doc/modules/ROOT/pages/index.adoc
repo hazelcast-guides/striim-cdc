@@ -42,13 +42,8 @@ started.
 Please go to http://172.17.0.2:9080 or https://172.17.0.2:9081 to administer, or use console
 ----
 
-If you experience an expired license key issue:
-
 ----
-Note: This docker image is an evaluation version which comes with a trial license valid for
-15 days and a single node. Any docker image older than 15 days would not work. We try and keep
-pushing our latest releases on DockerHub. But in case, you don't see an image within 15
-days or if you need an extended license, please contact support@striim.com
+Note: If you experience an expired license key issue please contact support@striim.com
 ----
 
 If everything goes well, then Striim dashboard will be available under _http://localhost:9080_. You can use `+admin/admin+` as credentials.
