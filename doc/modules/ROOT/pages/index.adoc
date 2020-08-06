@@ -44,16 +44,16 @@ That is the excerpt from Striim DockerHub Page if you experience an expired lice
 
 ----
 Note: This docker image is an evaluation version which comes with a trial license valid for
-15 days and single node. Any docker image older than 15 days would not work. We try and keep
-pushing our latest releases on docker hub. But in case, you don't see an image within 15
-days or if you need extended license, please contact support@striim.com
+15 days and a single node. Any docker image older than 15 days would not work. We try and keep
+pushing our latest releases on DockerHub. But in case, you don't see an image within 15
+days or if you need an extended license, please contact support@striim.com
 ----
 
-If everything goes well then Striim dashboard will be available under http://localhost:9080. You can use `+admin/admin+` as credentials.
+If everything goes well, then Striim dashboard will be available under http://localhost:9080. You can use `+admin/admin+` as credentials.
 
 == Oracle Database Enterprise Edition
 
-Oracle Database Docker Hub Page contains a Docker image as container option for Oracle Database. Visit https://hub.docker.com/_/oracle-database-enterprise-edition[Oracle Database Docker Hub Page] and click on `+Proceed Checkout+`. This will subscribe you to Developer Tier.
+Oracle Database Docker Hub Page contains a Docker image as a container option for Oracle Database. Visit https://hub.docker.com/_/oracle-database-enterprise-edition[Oracle Database Docker Hub Page] and click on `+Proceed Checkout+`. This will subscribe you to Developer Tier.
 
 Make sure you are logged in to DockerHub:
 
@@ -139,7 +139,7 @@ grant c##striim_privs to c##striim container=all;
 alter user c##striim set container_data = (cdb$root, ORCLPDB1) container=current;
 ----
 
-Create striim user to create/update database tables:
+Create _striim_ user to create/update database tables:
 
 [source,bash]
 ----
@@ -160,7 +160,7 @@ $ SQL> conn striim/striim@orclpdb1
 $ SQL> create table STRIIM.PRODUCT_INV(SKU NUMBER(19) not null primary key, LAST_UPDATED TIMESTAMP(6), NAME VARCHAR2(255 char), STOCK FLOAT not null);
 ----
 
-We will use/populate the newly created table at next steps. By the way, this user will be used by our Spring application.
+We'll use/populate the newly created table in the next steps. By the way, this user will be used by our Spring application.
 
 == Configuring Striim
 
@@ -211,21 +211,21 @@ $ docker restart striim
 
 == Install OracleHazelcastCDC App into Striim
 
-In the previous sections, we installed required software for the sample application. We now will install OracleHazelcastCDC app through Striim dashboard. There are two ways to install OracleHazelcastCDC App. We recommend to use `+Using TQL file (Quick Setup)+`
+In the previous sections, we installed the required software for the sample application. We'll now install OracleHazelcastCDC app through Striim dashboard. There are two ways to install OracleHazelcastCDC App. We recommend to use `+Using TQL file (Quick Setup)+`
 
 * Using TQL file (Quick Setup)
 * Configuring through Striim dashboard
 
 == Configuring Oracle Database CDC connection Using TQL file (Quick Setup)
 
-. Change `+{ORACLE_DB_ADDRESS}+` and `+{HZ_IP_ADDRESS}+` placeholders with your HOST IP addresses at `+config/OracleHazelcastCDC.tql+`. You can modify these values before deploy the app as well.
+. Change `+{ORACLE_DB_ADDRESS}+` and `+{HZ_IP_ADDRESS}+` placeholders with your HOST IP addresses at `+config/OracleHazelcastCDC.tql+`. You can modify these values before deploying the app as well.
 . Go to http://localhost:9080/#createapp[Create App Page] and select `+Import Existing App+` and choose `+.tql+` which you already modified.
 . Deploy and Run CDC application:
 image:application_run_2.png[Run CDC Application]
 
 == Configuring Oracle Database CDC connection on Striim dashboard
 
-. To create new app, select `+Start with Template+` then
+. To create a new app, select `+Start with Template+` then
 `+Oracle CDC to Hazelcast+`:
 +
 image::create_new_app.png[Create New App]
@@ -238,7 +238,7 @@ image::oracle_reader_1.png[DB Connection Creds]
 image::oracle_reader_2.png[DB Connection Control]
 
 * `+localhost+` or `+IP address of oracledb container+` does not work for `+Connection URL+` so you need to use your HOST IP address.
-* As you can see above, service section of `+Connection URL+` is configured as a `+/orclpdb1.localdomain+`, not as `+:ORCLCDB+`. If you configure service as a `+:ORCLCDB+`, `+STRIIM+` application or `+C##STRIIM+` common user can not reach/list `+PRODUCT_INV+` table which is under `+STRIIM+` local user because of `+CDB specific+` bug at Striim template itself. We will update these infos with the correct ones before deploy the application. By the way, we have already contacted with them and reported this issue. They will provide to fix at future releases. If you use Oracle DB *without CDB*, you are not affected by this issue.
+* As you can see above, the service section of `+Connection URL+` is configured as a `+/orclpdb1.localdomain+`, not as `+:ORCLCDB+`. If you configure service as a `+:ORCLCDB+`, `+STRIIM+` application or `+C##STRIIM+` common user can not reach/list `+PRODUCT_INV+` table which is under `+STRIIM+` local user because of `+CDB specific+` bug at Striim template itself. We'll update this info with the correct ones before deploying the application. By the way, we have already contacted them and reported this issue. They will provide to fix at future releases. If you use Oracle DB *without CDB*, you are not affected by this issue.
 
 . Select source table:
 
@@ -261,7 +261,7 @@ image::hazelcast_writer_3.png[Hazelcast Target]
 
 == Apply OracleReader changes and Deploy & Run the CDC application
 
-. After all configuration steps finally your CDC applications is created. Before deploy and create application, as mentioned at `+Configuring Oracle Database CDC connection on Striim dashboard+` section, you need to update `+Connection URL+` and `+Tables+` section like this to run CDC application without any issue:
+. After all configuration steps finally, your CDC application is created. Before deploy and create an application, as mentioned at `+Configuring Oracle Database CDC connection on Striim dashboard+` section, you need to update `+Connection URL+` and `+Tables+` section like this to run CDC application without any issue:
 +
 image::application_change_1.png[Update Reader]
 +
@@ -284,7 +284,7 @@ $ mvn spring-boot:run
 
 == Check up
 
-. Check application loading data from OracleReader to HazelcastWriter. Verify throughput on the the screen with a similar number like `+46 msg/s+` on the screenshot below.
+. Check application loading data from OracleReader to HazelcastWriter. Verify throughput on the screen with a similar number like `+46 msg/s+` on the screenshot below.
 +
 image::application_run_1.png[RunningApplication]
 +
