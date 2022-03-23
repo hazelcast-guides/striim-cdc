@@ -1,13 +1,14 @@
-:github-address: https://github.com/hazelcast-guides/striim-cdc
-:templates-url: templates:ROOT:page$/
-
 = Load data from Oracle CDC to Hazelcast via Striim
+:templates-url: templates:ROOT:page$/
+:page-layout: tutorial
+:page-product: platform
+:page-categories: Caching, CDC
+:page-lang: java
+:page-edition: 
+:page-est-time: 10 mins
+:description: This tutorial shows you how to use the Hazelcast Striim Writer to create a hot cache for data stored in Oracle Database Enterprise Edition (12.2.0.1).
 
-This guide shows how to use Hazelcast Striim Writer to create a hot cache for data stored in Oracle Database Enterprise Edition (12.2.0.1).
-
-include::{templates-url}/link-to-repo.adoc[]
-
-== Prerequisites
+== Before you Begin
 
 * Docker
 * DockerHub Account (required by Oracle Database Enterprise Edition)
@@ -22,7 +23,7 @@ include::{templates-url}/link-to-repo.adoc[]
 
 Striim is an end-to-end streaming platform for real-time integration and data analytics.
 
-This guide uses Striim evaluation version hosted at https://hub.docker.com/r/striim/evalversion/[Striim DockerHub].
+This tutorial uses Striim evaluation version hosted at https://hub.docker.com/r/striim/evalversion/[Striim DockerHub].
 
 To run Striim evaluation version, run the following Docker commands(remember to replace placeholders with actual values):
 
@@ -121,8 +122,7 @@ https://www.striim.com/docs/en/enabling-supplemental-log-data.html[link].
 
 Create an Oracle User with _LogMiner_ privileges:
 
-[source,bash]
-----
+```
 create role c##striim_privs;
 grant create session,execute_catalog_role,select any transaction,select any dictionary,logmining to c##striim_privs;
 grant select on SYSTEM.LOGMNR_COL$ to c##striim_privs;
@@ -132,7 +132,7 @@ grant select on SYSTEM.LOGMNR_UID$ to c##striim_privs;
 create user c##striim identified by striim container=all;
 grant c##striim_privs to c##striim container=all;
 alter user c##striim set container_data = (cdb$root, ORCLPDB1) container=current;
-----
+```
 
 Create _striim_ user to create/update database tables:
 
@@ -181,7 +181,7 @@ $ mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle
 [source,bash]
 ----
  $ git clone https://github.com/hazelcast-guides/striim-cdc.git
- $ cd pojo
+ $ cd striim-cdc/pojo
  $ mvn install
 ----
 . To use `+HazelcastWriter+`, you need to POJO jar and ORM file, you can find details about these files, https://www.striim.com/docs/en/hazelcast-writer.html[here]. You can copy POJO jar and ORM file to striim container using below commands:
