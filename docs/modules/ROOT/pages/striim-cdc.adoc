@@ -1,7 +1,7 @@
 = Load data from Oracle CDC to Hazelcast via Striim
 :templates-url: templates:ROOT:page$/
 :page-layout: tutorial
-:page-product: platform
+:page-product: imdg
 :page-categories: Caching, CDC
 :page-lang: java
 :page-edition: 
