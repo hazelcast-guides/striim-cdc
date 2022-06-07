@@ -1,3 +1,0 @@
-name: striim-cdc
-title: Load data from Oracle CDC to Hazelcast via Striim
-version: master
